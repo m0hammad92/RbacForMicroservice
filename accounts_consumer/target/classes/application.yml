@@ -1,0 +1,40 @@
+server:
+  port: 8081
+spring:
+  application:
+    name: "accounts"
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://localhost:8080/realms/lidaa/protocol/openid-connect/certs
+
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+build:
+  version: 1.0
+
+springdoc:
+  show-actuator: false
+  oAuthFlow:
+    authorizationUrl: http://localhost:8080/realms/lidaa/protocol/openid-connect/auth
+    tokenUrl: http://localhost:8080/realms/lidaa/protocol/openid-connect/token
+  swagger-ui:
+    display-request-duration: true
+    oauth:
+      clientId: lidaa
+      clientSecret: J50SnElpPHd6xt0ZaWHgipqo19Lvcs7C
+
+jwt-mapping:
+  identityProvider: keycloak
+  authorityPrefix: ROLE_
+  principalClaim: preferred_username
+
+logging:
+  level:
+    com.lidaa.accounts: INFO

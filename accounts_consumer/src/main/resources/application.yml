@@ -1,0 +1,53 @@
+server:
+  port: 8082
+spring:
+  application:
+    name: "accounts-consumer"
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://localhost:8080/realms/lidaa/protocol/openid-connect/certs
+
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+build:
+  version: 1.0
+
+springdoc:
+  show-actuator: false
+  oAuthFlow:
+    authorizationUrl: http://localhost:8080/realms/lidaa/protocol/openid-connect/auth
+    tokenUrl: http://localhost:8080/realms/lidaa/protocol/openid-connect/token
+  swagger-ui:
+    display-request-duration: true
+    oauth:
+      clientId: lidaa
+      clientSecret: J50SnElpPHd6xt0ZaWHgipqo19Lvcs7C
+
+jwt-mapping:
+  identityProvider: keycloak
+  authorityPrefix: ROLE_
+  principalClaim: preferred_username
+
+logging:
+  level:
+    com.lidaa.accounts: INFO
+
+microservice:
+  accountBaseUri: {ACCOUNT_BASE_URI:localhost:8081}
+
+# properties used for fetching token in the client credential flow
+identity:
+  clientCredentialsFlow: ${IS_CLIENT_CREDENTIALS_FLOW:false}
+  realm: ${IDENTITY_REALM:}
+  clientId: ${IDENTITY_CLIENT_ID:}  # clientId of the identityProvider from where the token needs to be retrieved.
+  clientSecret: ${IDENTITY_CLIENT_SECRET:} # clientSecret of the identityProvider from where the token needs to be retrieved.
+  grantType: ${IDENTITY_GRANT_TYPE:client_credentials}  # grantType of the identityProvider from where the token needs to be retrieved.
+  scope: ${IDENTITY_SCOPE:openid} # scope of the identityProvider from where the token needs to be retrieved.
+  tokenUrl: ${IDENTITY_TOKEN_URL:}  # URl of the identityProvider for fetching the token.
